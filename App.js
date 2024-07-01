@@ -4,9 +4,14 @@ import WeatherSearch from './src/components/weatherSearch'
 import WeatherInfo from './src/components/weatherInfo'
 
 const App = () => {
+  const searchWeather = (location) => {
+    console.log(location)
+  }
+
   return (
     <View style={styles.container}>
-      <WeatherSearch />
+      {/* Berikan function searchWeather ke component weatherSearch */}
+      <WeatherSearch searchWeather={searchWeather} />
       <WeatherInfo />
     </View>
   )
