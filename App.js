@@ -1,4 +1,5 @@
-import React from 'react'
+// Import useState
+import React, { useState } from 'react'
 // Import axios, BASE_URL, dan API_KEY
 import axios from 'axios'
 import { BASE_URL, API_KEY } from './src/constant'
@@ -7,13 +8,19 @@ import WeatherSearch from './src/components/weatherSearch'
 import WeatherInfo from './src/components/weatherInfo'
 
 const App = () => {
-  // Perbarui function searchWeather dengan menggunakan axios
+  // Definisikan state "weatherData" dan "setWeatherData"
+  const [weatherData, setWeatherData] = useState()
   const searchWeather = (location) => {
     axios
       .get(`${BASE_URL}?q=${location}&appid=${API_KEY}`)
       .then((response) => {
         const data = response.data
-        console.log(data)
+        // Tambahkan code di bawah
+        data.visibility /= 1000
+        data.visibility = data.visibility.toFixed(2)
+        data.main.temp -= 273.15 // Konversi Kelvin ke Celcius
+        data.main.temp = data.main.temp.toFixed(2)
+        setWeatherData(data)
       })
       .catch((error) => {
         console.log(error)
@@ -23,7 +30,8 @@ const App = () => {
   return (
     <View style={styles.container}>
       <WeatherSearch searchWeather={searchWeather} />
-      <WeatherInfo />
+      {/* Tampilkan data cuaca ketika ada weatherData */}
+      {weatherData && <WeatherInfo weatherData={weatherData} />}
     </View>
   )
 }
